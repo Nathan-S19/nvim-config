@@ -42,5 +42,6 @@ return {
         log_level = "info"
       })
     end,
-  }
+  },
+  -- Lualine is now defined in its own file at lua/custom/plugins/lualine.lua
 }
