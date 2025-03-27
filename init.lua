@@ -274,13 +274,40 @@ require('lazy').setup {
       require('which-key').setup()
 
       -- Document existing key chains
-      require('which-key').register {
-        ['<leader>c'] = { name = '[C]ode', _ = 'which_key_ignore' },
-        ['<leader>d'] = { name = '[D]ocument', _ = 'which_key_ignore' },
-        ['<leader>r'] = { name = '[R]ename', _ = 'which_key_ignore' },
-        ['<leader>s'] = { name = '[S]earch', _ = 'which_key_ignore' },
-        ['<leader>w'] = { name = '[W]orkspace', _ = 'which_key_ignore' },
-      }
+      require('which-key').register({
+        { '<leader>c', group = '[C]ode' },
+        { '<leader>c_', hidden = true },
+        { '<leader>d', group = '[D]ocument' },
+        { '<leader>d_', hidden = true },
+        { '<leader>r', group = '[R]ename' },
+        { '<leader>r_', hidden = true },
+        { '<leader>s', group = '[S]earch' },
+        { '<leader>s_', hidden = true },
+        { '<leader>W', group = '[W]orkspace' },
+        { '<leader>W_', hidden = true },
+        { '<leader>w', group = '[w]indow' },
+        { '<leader>w_', hidden = true },
+      })
+      
+      -- Register window command mappings for which-key
+      require('which-key').register({
+        ['<leader>w'] = {
+          name = 'Window',
+          v = { '<C-w>v', 'Split vertical' },
+          s = { '<C-w>s', 'Split horizontal' },
+          h = { '<C-w>h', 'Go to left window' },
+          j = { '<C-w>j', 'Go to bottom window' },
+          k = { '<C-w>k', 'Go to top window' },
+          l = { '<C-w>l', 'Go to right window' },
+          q = { '<C-w>q', 'Close window' },
+          o = { '<C-w>o', 'Close other windows' },
+          ['='] = { '<C-w>=', 'Equal size windows' },
+          ['>'] = { '<C-w>>', 'Increase width' },
+          ['<'] = { '<C-w><', 'Decrease width' },
+          ['+'] = { '<C-w>+', 'Increase height' },
+          ['-'] = { '<C-w>-', 'Decrease height' },
+        },
+      })
     end,
   },
 
@@ -476,7 +503,7 @@ require('lazy').setup {
 
           -- Fuzzy find all the symbols in your current workspace
           --  Similar to document symbols, except searches over your whole project.
-          map('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+          map('<leader>Ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
 
           -- Rename the variable under your cursor
           --  Most Language Servers support renaming across files, etc.
@@ -541,8 +568,8 @@ require('lazy').setup {
         --    https://github.com/pmizio/typescript-tools.nvim
         --
         -- But for many setups, the LSP (`tsserver`) will work just fine
-        tsserver = {},
         --
+        ts_ls = {},
 
         lua_ls = {
           -- cmd = {...},
@@ -682,6 +709,9 @@ require('lazy').setup {
           --  This will auto-import if your LSP supports it.
           --  This will expand snippets if the LSP sent a snippet.
           ['<C-y>'] = cmp.mapping.confirm { select = true },
+          
+          -- Enter as selection key
+          ['<CR>'] = cmp.mapping.confirm { select = true },
 
           -- Manually trigger a completion from nvim-cmp.
           --  Generally you don't need this, because nvim-cmp will display
@@ -825,3 +855,21 @@ require('lazy').setup {
 -- Toggle the neotree window
 
 vim.keymap.set('n', '<leader>l', ':Neotree toggle<CR>', { silent = true })
+
+-- Add keymap for closing windows
+vim.keymap.set('n', '<leader>q', ':q<CR>', { desc = 'Close window', silent = true })
+
+-- Individual window mappings (will show in which-key menu)
+vim.keymap.set('n', '<leader>wv', '<C-w>v', { desc = 'Split vertical', silent = true })
+vim.keymap.set('n', '<leader>ws', '<C-w>s', { desc = 'Split horizontal', silent = true })
+vim.keymap.set('n', '<leader>wh', '<C-w>h', { desc = 'Go to left window', silent = true })
+vim.keymap.set('n', '<leader>wj', '<C-w>j', { desc = 'Go to bottom window', silent = true })
+vim.keymap.set('n', '<leader>wk', '<C-w>k', { desc = 'Go to top window', silent = true })
+vim.keymap.set('n', '<leader>wl', '<C-w>l', { desc = 'Go to right window', silent = true })
+vim.keymap.set('n', '<leader>wq', '<C-w>q', { desc = 'Close window', silent = true })
+vim.keymap.set('n', '<leader>wo', '<C-w>o', { desc = 'Close other windows', silent = true })
+vim.keymap.set('n', '<leader>w=', '<C-w>=', { desc = 'Equal size windows', silent = true })
+vim.keymap.set('n', '<leader>w>', '<C-w>>', { desc = 'Increase width', silent = true })
+vim.keymap.set('n', '<leader>w<', '<C-w><', { desc = 'Decrease width', silent = true })
+vim.keymap.set('n', '<leader>w+', '<C-w>+', { desc = 'Increase height', silent = true })
+vim.keymap.set('n', '<leader>w-', '<C-w>-', { desc = 'Decrease height', silent = true })
