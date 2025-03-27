@@ -271,10 +271,13 @@ require('lazy').setup {
     'folke/which-key.nvim',
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'
     config = function() -- This is the function that runs, AFTER loading
-      require('which-key').setup()
+      require('which-key').setup {
+        -- Disable the which-key health check warnings
+        notify = false,
+      }
 
       -- Document existing key chains
-      require('which-key').register({
+      require('which-key').register {
         { '<leader>c', group = '[C]ode' },
         { '<leader>c_', hidden = true },
         { '<leader>d', group = '[D]ocument' },
@@ -287,10 +290,10 @@ require('lazy').setup {
         { '<leader>W_', hidden = true },
         { '<leader>w', group = '[w]indow' },
         { '<leader>w_', hidden = true },
-      })
-      
+      }
+
       -- Register window command mappings for which-key
-      require('which-key').register({
+      require('which-key').register {
         ['<leader>w'] = {
           name = 'Window',
           v = { '<C-w>v', 'Split vertical' },
@@ -307,7 +310,7 @@ require('lazy').setup {
           ['+'] = { '<C-w>+', 'Increase height' },
           ['-'] = { '<C-w>-', 'Decrease height' },
         },
-      })
+      }
     end,
   },
 
@@ -709,7 +712,7 @@ require('lazy').setup {
           --  This will auto-import if your LSP supports it.
           --  This will expand snippets if the LSP sent a snippet.
           ['<C-y>'] = cmp.mapping.confirm { select = true },
-          
+
           -- Enter as selection key
           ['<CR>'] = cmp.mapping.confirm { select = true },
 
